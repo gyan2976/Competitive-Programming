@@ -15,91 +15,37 @@
 #include <unordered_set>
 using namespace std;
 
-// Brute Force - O(n)
-// Using Stack
+// Solution
+// Time - O(n)
+// Space - O(1)
 string reverseWords(string s)
 {
-    stack<string> st;
-    string str = "";
-    
-    for(int i = 0; i < s.length(); i++) {
-        if(s[i] == ' ') 
-        {
-            if(!str.empty()) 
-            {  // Only push non-empty strings
-                st.push(str);
-                str = "";
-            }
-        } 
-        else 
-        {
-            str += s[i];
-        }
-    }
-    
-    // Push the last word if it exists
-    if(!str.empty()) 
-    {
-        st.push(str);
-    }
+    reverse(s.begin(), s.end());
 
-    string ans = "";
-    while(!st.empty()) 
-    {
-        ans += st.top();
-        st.pop();
-        if(!st.empty()) 
-        {
-            ans += " ";
-        }
-    }
+    cout << "GGG: " << s << endl; // Output: GGG: eulb si yks eht
 
-    return ans;
-}
+    int n = s.size();
+    int left = 0;
+    int right = 0;
+    int i = 0;
+    while (i < n) 
+    {
+        while (i < n && s[i] == ' ')
+            i++;
+        if (i == n)
+            break;
+        while (i < n && s[i] != ' ') 
+        {
+            s[right++] = s[i++];
+        }
 
-// Optimal - O(n), n = length of string
-string reverseWords(string s)
-{
-    string temp = "";
-    string ans = "";
-    
-    for (char ch : s) 
-    {
-        if (ch != ' ') 
-        {
-            temp += ch;
-        } 
-        else 
-        {
-            if (!temp.empty()) 
-            {
-                if (!ans.empty()) 
-                {
-                    ans = temp + " " + ans;
-                } 
-                else 
-                {
-                    ans = temp;
-                }
-                temp = "";
-            }
-        }
+        reverse(s.begin() + left, s.begin() + right);
+        s[right++] = ' ';
+        left = right;
+        i++;
     }
-    
-    // Add the last word if it exists
-    if (!temp.empty()) 
-    {
-        if (!ans.empty()) 
-        {
-            ans = temp + " " + ans;
-        } 
-        else 
-        {
-            ans = temp;
-        }
-    }
-    
-    return ans;
+    s.resize(right - 1);
+    return s;
 }
 
 int main()
@@ -113,11 +59,12 @@ int main()
     cin >> t;
     while(t--)
     {
-        string s = "Gyan Ranjan Kumar";
-        cout<< "Before reversing words: " << endl;
-        cout<< s << endl;
-        cout<< "After reversing words: " << endl;
-        cout<< reverseWords(s); 
+        string s = "the sky is blue";  // Output: "blue is sky the"
+        string s = "  hello world  ";  // Output: "world hello"
+        string s = "a good   example"; // Output: "example good a"
+        string ans = reverseWords(s);
+        cout << ans << endl;
+
     }
 
     return 0;
